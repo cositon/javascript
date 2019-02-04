@@ -144,7 +144,7 @@ var Calculadora={
 			break
 		}
 		this.numNatural=true //reseteo de la condicion de numero natural
-			this.numero1=this.resultado			//asignacion del numero1 para proceder a una segunda operacion de ser necesario
+			this.numero1=document.getElementById("display").value			//asignacion del numero1 para proceder a una segunda operacion de ser necesario
 			this.operacion=null //reseteo de la operacion a realizar 
 		/*Impresion en pantalla*/
 		if((this.resultado).toString().length>8){//impresion en pantalla de numeros irracionales con un maximo de 8 cifras
