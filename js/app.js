@@ -1,5 +1,5 @@
 var Calculadora={
-	display:parseInt(document.getElementById("display").innerHTML),//Se obtiene el contenido del html con tipo de dato int
+	display:parseFloat(document.getElementById("display").innerHTML),//Se obtiene el contenido del html con tipo de dato int
 	init:function(){
 		this.onC()//formateo de los valores
 		botones=document.getElementsByClassName("tecla")//obtencion de un array con los botones de la calculadora
@@ -12,6 +12,7 @@ var Calculadora={
 		var tecla=event.currentTarget.id//obtencion de la tecla presionada
 		Calculadora.reducirboton(tecla)//llamado a la funcion que reduce el tamaño de la funcion
 		Calculadora.respuesta(tecla)//llamado a la funcion que maneja la respuesta de la calculadora a los botones que se presionan
+	
 	},
 	reducirboton:function(tecla){//funcion al hacer clic en el boton que reduce el tamaño de este
 		if(tecla=="mas"){//particularidades de la tecla mas ya que posee distinto tamaño a las demas teclas
@@ -34,7 +35,7 @@ var Calculadora={
 	respuesta:function(tecla){//funcion que maneja el comportamiento de las teclas
 		display.style.display="inherit"//vuelve a mostrar el visor una vez que se blanqueo
 		this.enVisor=display.innerHTML//extrae el contenido del visor
-		if((Number.isInteger(parseInt(tecla)))&&(this.validarDigitos())==false){//corrobora que se este ejecutando un numero y no se supere las 8 cifras
+		if((Number.isInteger(parseFloat(tecla)))&&(this.validarDigitos())==false){//corrobora que se este ejecutando un numero y no se supere las 8 cifras
 			if((this.enVisor==0)&&(this.numNatural==true)){
 				this.display=tecla//asigna el valor al display de la tecla presionada cuando no hay ningun contenido previo
 			}else{
@@ -98,7 +99,8 @@ var Calculadora={
 		}
 	},
 	operaciones(tecla){//Asignacion del primer valor y de la operacion que se debe realizar
-		this.numero1=parseInt(this.display)
+		this.numero1=parseFloat(this.display)
+
 			this.display=0
 		switch(tecla){
 			case "mas":
@@ -114,35 +116,43 @@ var Calculadora={
 				this.operacion="/"
 				break
 		}
+		this.numNatural=true
+		this.display=0
 
 		display.style.display="none"
 	},
 	calculos:function(){//realizacion de las operaciones matematicas
+		if(this.numero1==null){//si aun no se coloco una operacion da igual al numero ingresado
+			this.resultado=parseFloat(this.display)
+		}
 		switch(this.operacion){
 			case "+":
-				this.numero2=parseInt(this.display)	
+				this.numero2=parseFloat(this.display)	
 			this.resultado=this.numero1+this.numero2
 			break
 			case "-":
-				this.numero2=parseInt(this.display)	
+				this.numero2=parseFloat(this.display)	
 			this.resultado=this.numero1-this.numero2
 			break
 			case "*":
-				this.numero2=parseInt(this.display)	
+				this.numero2=parseFloat(this.display)	
 			this.resultado=this.numero1*this.numero2		
 			break
 			case "/":
-				this.numero2=parseInt(this.display)	
+				this.numero2=parseFloat(this.display)	
 			this.resultado=this.numero1/this.numero2
 			break
 		}
+		this.numNatural=true //reseteo de la condicion de numero natural
+			this.numero1=this.resultado			//asignacion del numero1 para proceder a una segunda operacion de ser necesario
+			this.operacion=null //reseteo de la operacion a realizar 
 		/*Impresion en pantalla*/
-		if(this.resultado.toString().length>8){
+		if((this.resultado).toString().length>8){//impresion en pantalla de numeros irracionales con un maximo de 8 cifras
 			this.display=(this.resultado).toFixed(8)
 		}else{
-			this.display=this.resultado
-		}		
+			this.display=this.resultado //impresion en pantalla de numeros con igual o menor cantidad de 8 cifras
+		}
+		this.enVisor=0				
 	}
 }
 Calculadora.init()
-
